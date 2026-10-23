@@ -1,0 +1,19 @@
+# Build results
+[Bb]in/
+[Oo]bj/
+
+# SQLite databases
+*.db
+*.db-shm
+*.db-wal
+
+# Visual Studio / VS Code
+.vs/
+.vscode/
+*.user
+*.suo
+
+# OS Files
+Thumbs.db
+Desktop.ini
+.DS_Store

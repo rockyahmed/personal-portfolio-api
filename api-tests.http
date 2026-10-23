@@ -1,0 +1,122 @@
+@baseUrl = http://localhost:5281
+@contentType = application/json
+
+### 1. Login as Admin
+# Default seeded Admin: admin@example.com / Admin@123456
+# @name adminLogin
+POST {{baseUrl}}/api/v1/auth/login
+Content-Type: {{contentType}}
+
+{
+  "identifier": "admin@example.com",
+  "password": "Admin@123456"
+}
+
+### Store Token from Admin Login
+@adminToken = {{adminLogin.response.body.data.accessToken}}
+@refreshToken = {{adminLogin.response.body.data.refreshToken}}
+
+### 2. Login as Standard Demo User
+POST {{baseUrl}}/api/v1/auth/login
+Content-Type: {{contentType}}
+
+{
+  "identifier": "johndoe",
+  "password": "User@123456"
+}
+
+### 3. Register a New User
+# @name registerUser
+POST {{baseUrl}}/api/v1/auth/register
+Content-Type: {{contentType}}
+
+{
+  "username": "sarahconnor",
+  "email": "sarah.connor@example.com",
+  "firstName": "Sarah",
+  "lastName": "Connor",
+  "password": "Password@123",
+  "phoneNumber": "+1234567890"
+}
+
+### 4. Get Current User Profile (Me)
+GET {{baseUrl}}/api/v1/auth/me
+Authorization: Bearer {{adminToken}}
+
+### 5. Refresh Access Token
+POST {{baseUrl}}/api/v1/auth/refresh-token
+Content-Type: {{contentType}}
+
+{
+  "accessToken": "{{adminToken}}",
+  "refreshToken": "{{refreshToken}}"
+}
+
+### 6. Get All Users (Paginated, Search & Filter) - Admin/Manager only
+GET {{baseUrl}}/api/v1/users?pageNumber=1&pageSize=10&searchTerm=&role=Admin&status=Active&sortBy=CreatedAt&sortDescending=true
+Authorization: Bearer {{adminToken}}
+
+### 7. Search Users by Keyword
+GET {{baseUrl}}/api/v1/users?searchTerm=john
+Authorization: Bearer {{adminToken}}
+
+### 8. Create User by Admin
+# @name createUser
+POST {{baseUrl}}/api/v1/users
+Authorization: Bearer {{adminToken}}
+Content-Type: {{contentType}}
+
+{
+  "username": "alexsmith",
+  "email": "alex.smith@example.com",
+  "firstName": "Alex",
+  "lastName": "Smith",
+  "password": "SecurePassword@123",
+  "phoneNumber": "+1555987654",
+  "role": "Manager",
+  "status": "Active"
+}
+
+### Store Created User ID
+@newUserId = {{createUser.response.body.data.id}}
+
+### 9. Get User by ID
+GET {{baseUrl}}/api/v1/users/{{newUserId}}
+Authorization: Bearer {{adminToken}}
+
+### 10. Update User Profile
+PUT {{baseUrl}}/api/v1/users/{{newUserId}}
+Authorization: Bearer {{adminToken}}
+Content-Type: {{contentType}}
+
+{
+  "firstName": "Alexander",
+  "lastName": "Smith",
+  "phoneNumber": "+1555000111"
+}
+
+### 11. Update User Status (Suspend account)
+PATCH {{baseUrl}}/api/v1/users/{{newUserId}}/status
+Authorization: Bearer {{adminToken}}
+Content-Type: {{contentType}}
+
+{
+  "status": "Suspended"
+}
+
+### 12. Update User Role (Promote to Admin)
+PATCH {{baseUrl}}/api/v1/users/{{newUserId}}/role
+Authorization: Bearer {{adminToken}}
+Content-Type: {{contentType}}
+
+{
+  "role": "Admin"
+}
+
+### 13. Soft Delete User
+DELETE {{baseUrl}}/api/v1/users/{{newUserId}}
+Authorization: Bearer {{adminToken}}
+
+### 14. Revoke Active Session (Logout)
+POST {{baseUrl}}/api/v1/auth/revoke-token
+Authorization: Bearer {{adminToken}}
