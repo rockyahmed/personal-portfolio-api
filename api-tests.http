@@ -120,3 +120,64 @@ Authorization: Bearer {{adminToken}}
 ### 14. Revoke Active Session (Logout)
 POST {{baseUrl}}/api/v1/auth/revoke-token
 Authorization: Bearer {{adminToken}}
+
+
+# ==========================================================
+# 🌟 PORTFOLIO PROJECTS API
+# ==========================================================
+
+### 15. Get All Portfolio Projects (Public)
+GET {{baseUrl}}/api/v1/projects?pageNumber=1&pageSize=10
+
+### 16. Get Featured Portfolio Projects (Public)
+GET {{baseUrl}}/api/v1/projects/featured
+
+### 17. Search Projects by Tag (e.g., React, .NET Core)
+GET {{baseUrl}}/api/v1/projects?tag=React
+
+### 18. Search Projects by Keyword (Title / Description / Tag)
+GET {{baseUrl}}/api/v1/projects?searchTerm=E-Commerce
+
+### 19. Create Portfolio Project (Admin / Manager)
+# Fields: image, link, title, tag, description, githubUrl, isFeatured, displayOrder
+# @name createProject
+POST {{baseUrl}}/api/v1/projects
+Authorization: Bearer {{adminToken}}
+Content-Type: {{contentType}}
+
+{
+  "title": "Crypto Portfolio Tracker",
+  "description": "Real-time cryptocurrency analytics dashboard with live market prices, interactive portfolio profit & loss tracking, and price alert notifications.",
+  "imageUrl": "https://images.unsplash.com/photo-1621416894569-0f39ed31d247?w=800",
+  "link": "https://crypto-tracker.example.com",
+  "tags": "React, TypeScript, .NET Core, WebSockets, TailwindCSS",
+  "githubUrl": "https://github.com/example/crypto-tracker",
+  "isFeatured": true,
+  "displayOrder": 1
+}
+
+### Store Created Project ID
+@newProjectId = {{createProject.response.body.data.id}}
+
+### 20. Get Portfolio Project by ID (Public)
+GET {{baseUrl}}/api/v1/projects/{{newProjectId}}
+
+### 21. Update Portfolio Project (Admin / Manager)
+PUT {{baseUrl}}/api/v1/projects/{{newProjectId}}
+Authorization: Bearer {{adminToken}}
+Content-Type: {{contentType}}
+
+{
+  "title": "Crypto Portfolio Tracker Pro",
+  "description": "Enhanced multi-wallet cryptocurrency portfolio tracker with automated transaction syncing and tax reporting.",
+  "imageUrl": "https://images.unsplash.com/photo-1621416894569-0f39ed31d247?w=800",
+  "link": "https://crypto-pro.example.com",
+  "tags": "React, TypeScript, .NET 10, WebSockets, PostgreSQL",
+  "githubUrl": "https://github.com/example/crypto-tracker",
+  "isFeatured": true,
+  "displayOrder": 1
+}
+
+### 22. Delete Portfolio Project (Admin)
+DELETE {{baseUrl}}/api/v1/projects/{{newProjectId}}
+Authorization: Bearer {{adminToken}}

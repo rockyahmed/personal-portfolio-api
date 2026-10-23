@@ -35,6 +35,10 @@ public static class DependencyInjection
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IAuthService, AuthService>();
 
+        // Portfolio Projects Services
+        services.AddScoped<IProjectRepository, ProjectRepository>();
+        services.AddScoped<IProjectService, ProjectService>();
+
         return services;
     }
 }

@@ -150,6 +150,17 @@ The database is automatically provisioned on the first application launch with t
 | `POST` | `/api/v1/users/{id}/change-password` | Admin, Self | Change user account password |
 | `DELETE` | `/api/v1/users/{id}` | Admin | Soft-delete user account |
 
+### 🎨 Portfolio Projects (`/api/v1/projects`)
+
+| Method | Endpoint | Access | Description |
+|---|---|---|---|
+| `GET` | `/api/v1/projects` | Anonymous | Get all projects with tag filtering, search, and pagination |
+| `GET` | `/api/v1/projects/featured` | Anonymous | Get featured showcase projects |
+| `GET` | `/api/v1/projects/{id}` | Anonymous | Get single project details by ID |
+| `POST` | `/api/v1/projects` | Admin, Manager | Create a new project (Title, Description, Image, Link, Tags) |
+| `PUT` | `/api/v1/projects/{id}` | Admin, Manager | Update project details |
+| `DELETE` | `/api/v1/projects/{id}` | Admin | Soft-delete a project |
+
 ---
 
 ## 🧪 Testing with `api-tests.http`
